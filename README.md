@@ -26,13 +26,13 @@ Skip-gram 기반 오류 검출 실행 파일은 `Skip-gram_embedding_based_error
 GloVe 임베딩 기반 오류 검출 실행 파일은 `GloVe_embedding_based_error_triple_detection.ipynb` 입니다.
 
 
-## parameter
+## parameters
 - 논문과 부합하는 결과를 얻기 위한 k-means 클러스터링의 optimal k
-	-GloVe
+	- GloVe
 		- DBpedia = 15
 		- WiseKB = 27
 		- FreeBase = 46
-	-Skip-gram
+	- Skip-gram
 		- DBpedia = 21
 		- WiseKB = 27
 		- FreeBase = 21
