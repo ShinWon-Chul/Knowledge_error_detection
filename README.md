@@ -15,15 +15,15 @@ e_401503 r_275 e_651539
 e_1890861 r_275 e_651539
 ```
 
-- `glove_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 sub-knowledge graph에 대한 문장을 생성하여[GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
-	- `glove_dbpedia/person_embedding(numpy array)` : pickle로 저장하여 (vocabsize,embedding_size)형식의 matrix
+- `glove_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 ***sub-knowledge graph에 대한 문장***(자세한 내용은 `Knowledge_error_detection/지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출.pdf` 참조)을 생성하여[GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
+	- `glove_dbpedia/person_embedding(numpy array)` : pickle로 저장된 (vocabsize,embedding_size)형식의 matrix
 	- `glove_dbpedia/person_words(list)` : person_embedding matrix의 행 label word
 
-- `skipgram_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 sub-knowledge graph에 대한 문장을 생성 [Skip-gram](https://arxiv.org/pdf/1301.3781.pdf) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
+- `skipgram_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 ***sub-knowledge graph에 대한 문장***을 생성 [Skip-gram](https://arxiv.org/pdf/1301.3781.pdf) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
 
 ## Running
 Skip-gram 기반 오류 검출 실행 파일은 `Skip-gram_embedding_based_error_triple_detection.ipynb` 입니다.
-GloVe 임베딩 기반 오류 검출 실행 파일은 `GloVe_embedding_based_error_triple_detection.ipynb`
+GloVe 임베딩 기반 오류 검출 실행 파일은 `GloVe_embedding_based_error_triple_detection.ipynb` 입니다.
 
 
 ## parameter
