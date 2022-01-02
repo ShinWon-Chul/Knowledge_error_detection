@@ -16,7 +16,7 @@ e_401503 r_275 e_651539
 e_1890861 r_275 e_651539
 ```
 
-- `glove_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 ***sub-knowledge graph에 대한 문장***(자세한 내용은 `Knowledge_error_detection/지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출.pdf` 참조)을 생성하여[GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
+- `glove_*` 폴더는 `*`에 해당하는 데이터를 중심으로부터 ***sub-knowledge graph에 대한 문장***(자세한 내용은 [`Knowledge_error_detection/지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출.pdf`](https://github.com/ShinWon-Chul/Knowledge_error_detection/blob/main/%EC%A7%80%EC%8B%9D%EA%B7%B8%EB%9E%98%ED%94%84%20%EC%9E%84%EB%B2%A0%EB%94%A9%20%EB%B0%8F%20%EC%A0%81%EC%9D%91%ED%98%95%20%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EB%A7%81%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EC%98%A4%EB%A5%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%EA%B2%80%EC%B6%9C.pdf) 참조)을 생성하여[GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
 	- `glove_dbpedia/person_embedding(numpy array)` : pickle로 저장된 (vocabsize,embedding_size)형식의 matrix
 	- `glove_dbpedia/person_words(list)` : person_embedding matrix의 행 label word
 
