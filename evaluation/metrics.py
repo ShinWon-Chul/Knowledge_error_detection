@@ -3,8 +3,20 @@ from util.counter import count_element, count_TPFP
 import numpy as np
 
 def get_initial_TP(pos_vectors, max_distance_each_cluster, centroids):
+    """
+    - function to get the distribution of entities in the initial cluster with delta equal to 1.
+
+    parameters:
+        pos_vectors(list of tulples) -- an array of positive entity and its entity vector tuples (entitiy, vector)
+        max_distance_each_cluster(dictionary) -- radius of each cluster 
+                                               - key : cluster / value : cluster radius distance
+        centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
+
+    return:
+        initial_TP(list) -- An array containing the number of positive entities included in each cluster.
+    """
     
-    true_clusters = grant_to_cluster(pos_vectors, 1, max_distance_each_cluster, centroids)
+    true_clusters = grant_to_cluster(pos_vectors, 1.0, max_distance_each_cluster, centroids)
     true_count, _ = count_TPFP(centroids, true_clusters, None)
 
     initial_TP = [v for k, v in true_count.items()]
@@ -12,17 +24,24 @@ def get_initial_TP(pos_vectors, max_distance_each_cluster, centroids):
 
 def get_precision_recall_each_cluster(true_count, false_count, cluster_labels, initial_TP):
     """
-    -function
+    - function that calculates the precision, recall, and f1 score of each cluster.
     
     param:
-    true_count(dictionary) -- 
-        -key : cluster number, -value : num_pos_entity
-    false_count(dictionary) --
-        -key : cluster number, -value : num_neg_entity
+    true_count(dictionary) -- a dictionary that stores the number of positive entity belonging to each cluster.
+                            -key : cluster number, -value : num_pos_entity
+    false_count(dictionary) -- a dictionary that stores the number of negitive entity belonging to each cluster.
+                             -key : cluster number, -value : num_neg_entity
     cluster_labels(int) -- num clusters
-    initial_TP(list) -- 각 cluster에 속한 초기 positive entity수
+    initial_TP(list) -- When delta is 1, the number of initial positive entity in each cluster
     
     return:
+    precision_list(list) -- an array containing the precision values for each cluster.
+    recall_list(list) -- an array containing the recall values for each cluster.
+    f1_list(list) -- an array containing the f1-scores for each cluster.
+    tp_list(list) -- an array containing the number of positive entity for each cluster.
+    fn_list(list) -- an array containing The number of positive entities 
+                     that went out of the cluster range when the delta was adjusted.
+    fp_list(list) -- an array containing the number of negative entity for each cluster.
     """
     precision_list = []
     recall_list = []
@@ -30,14 +49,12 @@ def get_precision_recall_each_cluster(true_count, false_count, cluster_labels, i
     tp_list = []
     fn_list = []
     fp_list = []
-    tn_list = []
     
     # 각 cluster를 순회하며 precision, recall, f1 score TP, FN, FP, TN을 list에 저장
     for cluster in range(cluster_labels):
         TP = true_count[cluster]
         FN = initial_TP[cluster] - TP
         FP = false_count[cluster]
-        TN = false_count['x'] 
 
         if (TP+FP) == 0:
             precision = 0.0
@@ -61,27 +78,29 @@ def get_precision_recall_each_cluster(true_count, false_count, cluster_labels, i
         tp_list.append(TP)
         fn_list.append(FN)
         fp_list.append(FP)
-        tn_list.append(TN)
 
     return precision_list, recall_list, f1_list,\
-                tp_list, fn_list, fp_list, tn_list
+                tp_list, fn_list, fp_list
 
 
 def get_ada_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids):
     """
-    - function
+    - function that adjusts the delta from 6.0 to 1.0 in 0.01 steps 
+      and calculates the precision, recall, and f1 score for each cluster.
     
     parameters:
-    pos_vector(train_pos_vector) -- [(word, vector), ... (word, vector)]
-    neg_vector(train_neg_vector) -- [(word, vector), ... (word, vector)]
-    max_distance_each_cluster(dictionary) -- 
-        key - cluster lable, value - max_distance
-    centroids -- 클러스터의 중심점 벡터 (k, embedding size) (27,100)
+    pos_vector -- an array of positive entity and its entity vector tuples
+                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+    neg_vector -- an array of negative entity and its entity vector tuples
+                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+    max_distance_each_cluster(dictionary) -- radius of each cluster dict 
+                                           - key : cluster / value : cluster radius distance
+    centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
     
     return:
-    precision_matrix(2D numpy array) -- precision of each cluster and delta / shape(40, number of cluster)
-    recall_matrix(2D numpy array) -- recall of each cluster and delta / shape(40, number of cluster)
-    f1_matrix(2D numpy array) -- f1-score of each cluster and delta / shape(40, number of cluster)
+    precision_matrix(2D numpy array) shape(40, number of cluster) -- precision of each cluster and delta
+    recall_matrix(2D numpy array) shape(40, number of cluster) -- recall of each cluster and delta 
+    f1_matrix(2D numpy array) shape(40, number of cluster) -- f1-score of each cluster and delta 
     """
     
     #0.6에서 1.0까지의 0.01간격으로 변하는 모든 delta값에서 각 cluster의 matric값을 저장할 2차원 배열 
@@ -92,12 +111,11 @@ def get_ada_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids
     tp_matrix = []
     fn_matrix = []
     fp_matrix = []
-    tn_matrix = []
-    
+
     # true_count(dictionary) : -key : cluster number, -value : num_pos_entity
     # false_count(dictionary) : -key : cluster number, -value : num_neg_entity
-    true_cluster = grant_to_cluster(pos_vector, 1, max_distance_each_cluster, centroids)
-    false_cluster = grant_to_cluster(neg_vector, 1, max_distance_each_cluster, centroids)
+    true_cluster = grant_to_cluster(pos_vector, 1.0, max_distance_each_cluster, centroids)
+    false_cluster = grant_to_cluster(neg_vector, 1.0, max_distance_each_cluster, centroids)
 
 
     true_count, false_count = count_TPFP(centroids, true_cluster, false_cluster)
@@ -111,8 +129,8 @@ def get_ada_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids
         false_cluster = grant_to_cluster(neg_vector, delta, max_distance_each_cluster, centroids)
         true_count, false_count = count_TPFP(centroids, true_cluster, false_cluster)
         
-        # 현제 delta 값에서 모든 클러스터의 precision, recall, f1 score, TP, FP, FN, TN을 구한 리스트 반환
-        p, r, f1, tp, fn, fp, tn= get_precision_recall_each_cluster(true_count, false_count, len(centroids), initial_TP)
+        # 현제 delta 값에서 모든 클러스터의 precision, recall, f1 score, TP, FP, FN 을 구한 리스트 반환
+        p, r, f1, tp, fn, fp = get_precision_recall_each_cluster(true_count, false_count, len(centroids), initial_TP)
 
         precision_matrix.append(p) # precision of each cluster and delta / shape(40, len(centroids)) 
         recall_matrix.append(r) # recall of each cluster and delta / shape(40, len(centroids))
@@ -120,13 +138,33 @@ def get_ada_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids
         tp_matrix.append(tp)
         fn_matrix.append(fn)
         fp_matrix.append(fp)
-        tn_matrix.append(tn)
 
     return np.array(precision_matrix), np.array(recall_matrix), np.array(f1_matrix),\
             np.array(tp_matrix), np.array(fn_matrix),\
-            np.array(fp_matrix), np.array(tn_matrix), initial_TP
+            np.array(fp_matrix), initial_TP
+
 
 def get_optimal_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids, optimaldeltas, initial_TP):
+    """
+    - function function that calculates precision, recall, TP, and FP for each cluster 
+      by applying the obtained optimal delta to the cluster
+    
+    parameters:
+    pos_vector(list of tuples) -- an array of positive entity and its entity vector tuples
+                                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+    neg_vector(list of tuples) -- an array of negative entity and its entity vector tuples
+                                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+    max_distance_each_cluster(dictionary) -- radius of each cluster dict 
+                                           - key : cluster number / value : cluster radius distance
+    centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
+    optimaldeltas(numpy array) shape(k,) -- an array with an optimal delta that maximizes the f1-score of each cluster.
+    
+    return:
+    optimalP(list) -- array with precision values calculated when optimal delta is applied to each cluster
+    optimalR(list) -- array with recall values calculated when optimal delta is applied to each cluster
+    optimalTP(list) -- array with the number of positive entities included when the optimal delta is applied to each cluster
+    optimalFP(list) -- array with the number of negative entities included when the optimal delta is applied to each cluster
+    """
     optimalP = []
     optimalR = []
     optimalTP = []
