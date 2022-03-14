@@ -7,18 +7,19 @@ def count_element(centroids, clusters):
 
 def count_TPFP(centroids, true_clusters=None, false_clusters=None):
     """
-    -function
+    - function
     param:
-    true_cluster(dictionary) --  
-        - key(string) : pos entity, - value(int) : cluster label
-    false_cluster(dictionary) --  
-        - key(string) : neg entity, - value(int) : cluster label
+    centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
+    true_cluster(dictionary) -- a dictionary containing information about the cluster to which a given positive entity belongs.
+                              - key(string) : positive entity / - value(int) : cluster label 
+    false_cluster(dictionary) -- a dictionary containing information about the cluster to which a given negative entity belongs.
+                               - key(string) : negative entity / - value(int) : cluster label 
     
     return: 
-    true_count(dictionary) -- 
-        -key : cluster number, -value : num_pos_entity
-    false_count(dictionary) -- 
-        -key : cluster number, -value : num_neg_entity
+    true_count(dictionary) -- dictionary with information about the number of positive entity belonging to each cluster
+        -key : cluster number, -value : the number of positive entity
+    false_count(dictionary) -- dictionary with information about the number of negative entity belonging to each cluster
+        -key : cluster number, -value : the number of negative entity
     """
     true_count = count_element(centroids, true_clusters)
     
