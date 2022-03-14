@@ -4,11 +4,11 @@ import numpy as np
 
 def kmeans_alg(vector_list, k, glove_dict):
     '''
-    function run scikit learn K-means algorithm for 20000 positive entities
+    - function run scikit learn K-means algorithm for positive entities
 
     parameters:
         vector_list(list) -- list of entities to which the K-means algorithm applies
-        k(int) -- number of centroids to run K-means
+        k(int) -- number of centroids
         glove_dict(dictionary) -- a dictionary that maps entities to vector values
             - key(string) : entity / -value(numpy array) : entity vector
 
@@ -30,14 +30,16 @@ def grant_to_cluster(vec_tuple_list, delta, max_distance_each_cluster, centroids
     - function assigns a given vector by checking which cluster it belongs to
 
     parameters:
-        vec_tuple_list(list of tulple) -- 20000 length list of tuple(entitiy, vector)
-        delats(float) -- 1 use initial radius
+        vec_tuple_list(list of tulples) -- an array of positive entity and its entity vector tuples
+                                           (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+
+        delats(float) -- 1.0 use initial radius, can be optimized with values between 0.6 and 1.0
         max_distance_each_cluster(dictionary) -- radius of each cluster dict 
             - key : cluster / value : cluster radius distance
         centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
 
     return:
-        in_cluster_dict(dictionary) -- dict of which cluster a given vector belongs to
+        in_cluster_dict(dictionary) -- dict of which cluster a given entity belongs to
             - key(string) : entity / value(int) : cluster label
     '''
     in_cluster_dict = {}
@@ -48,7 +50,7 @@ def grant_to_cluster(vec_tuple_list, delta, max_distance_each_cluster, centroids
         close_cluster = np.argmin(distance_with_centroid) # 해당 entity와 가장 가까운 cluster
                 
         delta = np.float32(delta)
-        
+
         # 모든 거리를 소수점 아래 5번째 자리 까지 반올림하여 부동 소수점 오차 완화
         radius_delta = np.round(max_distance_each_cluster[close_cluster]*delta, 5)
         min_distance = np.round(min(distance_with_centroid), 5)
