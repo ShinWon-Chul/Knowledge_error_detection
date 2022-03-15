@@ -25,9 +25,8 @@ e_1890861 r_275 e_651539
 (***Property Sentence*** : [`지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출`](/paper/지식그래프%20임베딩%20및%20적응형%20클러스터링을%20활용한%20오류%20트리플%20검출.pdf) 3.1 Property Sentence 생성 참조)
 
 ## Running
-Skip-gram 임베딩 기반 오류 트리플 검출 실행 파일은 [`Skip-gram_embedding_based_error_triple_detection.ipynb`](/Skip-gram_embedding_based_error_triple_detection.ipynb) 입니다.  
-GloVe 임베딩 기반 오류 트리플 검출 실행 파일은 [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb) 입니다.
-
+Skip-gram 임베딩 기반 오류 트리플 검출 실행 파일 : [`Skip-gram_embedding_based_error_triple_detection.ipynb`](/Skip-gram_embedding_based_error_triple_detection.ipynb) 
+GloVe 임베딩 기반 오류 트리플 검출 실행 파일 : [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb)
 
 ## parameters
 - 논문과 부합하는 결과를 얻기 위한 k-means 클러스터링의 optimal k
