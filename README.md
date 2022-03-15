@@ -16,17 +16,17 @@ e_401503 r_275 e_651539
 e_1890861 r_275 e_651539
 ```
 
-- `data/GloVeEntityVectors/glove_*` 폴더는 `*`에 해당하는 데이터의 (entity, type, person) 트리플로부터 ***Property Sentence***를 생성하고[GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
-	- `data/GloVeEntityVectors/glove_dbpedia/person_embedding(numpy array)` : pickle로 저장된 (vocabsize,embedding_size)형식의 matrix
-	- `data/GloVeEntityVectors/glove_dbpedia/person_words(list)` : person_embedding matrix의 행 label word
+- `data/GloVeEntityVectors/glove_*` 폴더는 `*`에 해당하는 데이터의 (entity, type, person) 트리플로부터 생성된 ***Property Sentence***에 대한 [GloVe](https://nlp.stanford.edu/projects/glove/) 알고리즘 임베딩 결과를 나타냅니다.
+	- `data/GloVeEntityVectors/glove_dbpedia/person_embedding` : (vocab size, embedding size) shape의 word embedding matrix  
+	- `data/GloVeEntityVectors/glove_dbpedia/person_words(list)` : embedding matrix의 행(row)에 해당하는 label word. 
+  
+- `data/SkipgramEntityVectors/skipgram_*` 폴더는 `*`에 해당하는 데이터의 (entity, type, person) 트리플로부터 생성된 ***Property Sentence***에 대한 [Skip-gram](https://arxiv.org/pdf/1301.3781.pdf) 알고리즘 임베딩 결과를 나타냅니다.  
 
-- `data/SkipgramEntityVectors/skipgram_*` 폴더는 `*`에 해당하는 데이터의 (entity, type, person) 트리플로부터 ***Property Sentence***를 생성 하고, [Skip-gram](https://arxiv.org/pdf/1301.3781.pdf) 알고리즘을 활용하여 임베딩한 벡터 결과를 나타냅니다.
-
-(***Property Sentence*** : [`지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출`](/paper/지식그래프%20임베딩%20및%20적응형%20클러스터링을%20활용한%20오류%20트리플%20검출.pdf) 3.1 Property Sentence 생성)
+(***Property Sentence*** : [`지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출`](/paper/지식그래프%20임베딩%20및%20적응형%20클러스터링을%20활용한%20오류%20트리플%20검출.pdf) 3.1 Property Sentence 생성 참조)
 
 ## Running
-Skip-gram 기반 오류 검출 실행 파일은 [`Skip-gram_embedding_based_error_triple_detection.ipynb`](/Skip-gram_embedding_based_error_triple_detection.ipynb) 입니다.  
-GloVe 임베딩 기반 오류 검출 실행 파일은 [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb) 입니다.
+Skip-gram 임베딩 기반 오류 트리플 검출 실행 파일은 [`Skip-gram_embedding_based_error_triple_detection.ipynb`](/Skip-gram_embedding_based_error_triple_detection.ipynb) 입니다.  
+GloVe 임베딩 기반 오류 트리플 검출 실행 파일은 [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb) 입니다.
 
 
 ## parameters
