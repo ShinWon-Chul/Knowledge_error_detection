@@ -1,1 +1,2 @@
 glove_dbpedia filter=lfs diff=lfs merge=lfs -text
+glove_freebase filter=lfs diff=lfs merge=lfs -text
