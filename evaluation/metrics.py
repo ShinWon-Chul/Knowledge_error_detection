@@ -7,9 +7,10 @@ def get_initial_TP(pos_vectors, max_distance_each_cluster, centroids):
     - function to get the distribution of entities in the initial cluster with delta equal to 1.
 
     parameters:
-        pos_vectors(list of tulples) -- an array of positive entity and its entity vector tuples (entitiy, vector)
+        pos_vectors(list of tulples) -- an array of positive entity and its entity vector tuples
+                                        (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
         max_distance_each_cluster(dictionary) -- radius of each cluster 
-                                               - key : cluster / value : cluster radius distance
+                                               - key : cluster / - value : cluster radius distance
         centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
 
     return:
@@ -28,9 +29,9 @@ def get_precision_recall_each_cluster(true_count, false_count, cluster_labels, i
     
     param:
     true_count(dictionary) -- a dictionary that stores the number of positive entity belonging to each cluster.
-                            -key : cluster number, -value : num_pos_entity
+                            - key : cluster number / - value : num_pos_entity
     false_count(dictionary) -- a dictionary that stores the number of negitive entity belonging to each cluster.
-                             -key : cluster number, -value : num_neg_entity
+                             - key : cluster number / - value : num_neg_entity
     cluster_labels(int) -- num clusters
     initial_TP(list) -- When delta is 1, the number of initial positive entity in each cluster
     
@@ -87,20 +88,26 @@ def get_ada_matrics(pos_vector, neg_vector, max_distance_each_cluster, centroids
     """
     - function that adjusts the delta from 6.0 to 1.0 in 0.01 steps 
       and calculates the precision, recall, and f1 score for each cluster.
+      For delta, the optimal delta that maximizes the f1-scroe of each cluster is selected among a total of 41 values.
+      The optimal delta selected is multiplied by the radius distance of each cluster.
     
     parameters:
-    pos_vector -- an array of positive entity and its entity vector tuples
+    pos_vector(list of tuples) -- an array of positive entity and its entity vector tuples
                   (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
-    neg_vector -- an array of negative entity and its entity vector tuples
+    neg_vector(list of tuples) -- an array of negative entity and its entity vector tuples
                   (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
     max_distance_each_cluster(dictionary) -- radius of each cluster dict 
-                                           - key : cluster / value : cluster radius distance
+                                           - key : cluster number / - value : cluster radius distance
     centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
     
     return:
-    precision_matrix(2D numpy array) shape(40, number of cluster) -- precision of each cluster and delta
-    recall_matrix(2D numpy array) shape(40, number of cluster) -- recall of each cluster and delta 
-    f1_matrix(2D numpy array) shape(40, number of cluster) -- f1-score of each cluster and delta 
+    precision_matrix(2D numpy array) shape(41, number of cluster) -- precision of each cluster and delta
+    recall_matrix(2D numpy array) shape(41, number of cluster) -- recall of each cluster and delta 
+    f1_matrix(2D numpy array) shape(41, number of cluster) -- f1-score of each cluster and delta
+    tp_matrix(2D numpy array) shape(41, number of cluster) -- True Positive of each cluster and delta
+    fn_matrix(2D numpy array) shape(41, number of cluster) -- False Negative of each cluster and delta
+    fp_matrix(2D numpy array) shape(41, number of cluster) -- False Positive of each cluster and delta
+    initial_TP(list) -- When delta is 1, the number of initial positive entity in each cluster
     """
     
     #0.6에서 1.0까지의 0.01간격으로 변하는 모든 delta값에서 각 cluster의 matric값을 저장할 2차원 배열 
@@ -151,13 +158,14 @@ def get_optimal_matrics(pos_vector, neg_vector, max_distance_each_cluster, centr
     
     parameters:
     pos_vector(list of tuples) -- an array of positive entity and its entity vector tuples
-                                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+                      (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
     neg_vector(list of tuples) -- an array of negative entity and its entity vector tuples
-                                  (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
+                      (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
     max_distance_each_cluster(dictionary) -- radius of each cluster dict 
                                            - key : cluster number / value : cluster radius distance
     centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
     optimaldeltas(numpy array) shape(k,) -- an array with an optimal delta that maximizes the f1-score of each cluster.
+    initial_TP(list) -- When delta is 1, the number of initial positive entity in each cluster
     
     return:
     optimalP(list) -- array with precision values calculated when optimal delta is applied to each cluster
