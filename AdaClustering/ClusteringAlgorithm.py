@@ -2,28 +2,31 @@ from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import euclidean_distances  #k-means using euclidean_distances
 import numpy as np
 
-def kmeans_alg(vector_list, k, glove_dict):
+def kmeans_alg(vector_list, k, vector_dict):
     '''
     - function run scikit learn K-means algorithm for positive entities
 
     parameters:
-        vector_list(list) -- list of entities to which the K-means algorithm applies
+        vector_list(list) -- list of entities (e.g. ['entity_1', 'entity_2', ..., 'entity_n'])
         k(int) -- number of centroids
-        glove_dict(dictionary) -- a dictionary that maps entities to vector values
+        vector_dict(dictionary) -- a dictionary that maps entities to vector values
             - key(string) : entity / -value(numpy array) : entity vector
 
     return:
-        X(numpy array) shape(num entity, embedding_size) -- glove_vectors of input shape
-        k_centroid_points(numpy array) shape(k, embedding_size) -- centroid points of k clusters
-        k_labels(numpy array) shape(num entity, ) -- label for the cluster to which each entity belongs to
+        vectors(numpy array) shape(num entity, embedding_size) -- glove vectors or skip-gram vectors 
+        centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
+        c_label(numpy array) shape(num entity, ) -- label for the cluster to which each entity belongs to
     '''
-    X = np.array([glove_dict[n.split()[0]] for n in vector_list])
+    if type(vector_dict) == dict : 
+        vectors = np.array([vector_dict[n.split()[0]] for n in vector_list])
+    else:
+        vectors = np.array([vector_dict.word_vec(n) for n in vector_list])
 
-    kmeans = KMeans(n_clusters=k, random_state=0, max_iter=1000).fit(X)
-    k_centroid_points = kmeans.cluster_centers_  # each c_count of center point 
-    k_labels = kmeans.labels_                    # [...] index is vector's index, value is in cluster
+    kmeans = KMeans(n_clusters=k, random_state=0, max_iter=1000).fit(vectors)
+    centroids = kmeans.cluster_centers_  # each c_count of center point 
+    c_label = kmeans.labels_                    # [...] index is vector's index, value is in cluster
     
-    return X, k_centroid_points, k_labels
+    return vectors, centroids, c_label
 
 def grant_to_cluster(vec_tuple_list, delta, max_distance_each_cluster, centroids):
     '''
@@ -31,16 +34,15 @@ def grant_to_cluster(vec_tuple_list, delta, max_distance_each_cluster, centroids
 
     parameters:
         vec_tuple_list(list of tulples) -- an array of positive entity and its entity vector tuples
-                                           (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
-
+            (e.g. [(entity(string), vector(numpy array)), ... (entity(string), vector(numpy array))])
         delats(float) -- 1.0 use initial radius, can be optimized with values between 0.6 and 1.0
-        max_distance_each_cluster(dictionary) -- radius of each cluster dict 
+        max_distance_each_cluster(dictionary) -- radius of each cluster
             - key : cluster / value : cluster radius distance
         centroids(numpy array) shape(k, embedding_size) -- centroid points of k clusters
 
     return:
         in_cluster_dict(dictionary) -- dict of which cluster a given entity belongs to
-            - key(string) : entity / value(int) : cluster label
+            - key(string) : entity / - value(int) : cluster label
     '''
     in_cluster_dict = {}
     distance_matrix = euclidean_distances([i[1] for i in vec_tuple_list], centroids) # numpy(20000, number of cluster)
