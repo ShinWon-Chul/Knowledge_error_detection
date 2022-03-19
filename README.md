@@ -29,10 +29,10 @@ Skip-gram 임베딩 기반 오류 트리플 검출 실행 파일 : [`Skip-gram_e
 GloVe 임베딩 기반 오류 트리플 검출 실행 파일 : [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb)
 
 ## parameters
-- 논문과 부합하는 결과를 얻기 위한 k-means 클러스터링의 optimal k
+- 최적의 오류 검출 결과를 얻기 위한 k-means 클러스터링의 optimal k
 	- GloVe
-		- DBpedia = 14
-		- WiseKB = 27
+		- DBpedia = 20
+		- WiseKB = 34
 		- FreeBase = 11
 	- Skip-gram
 		- DBpedia = 21
