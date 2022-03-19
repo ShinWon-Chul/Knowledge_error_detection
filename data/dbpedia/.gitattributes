@@ -1,1 +1,2 @@
 sentence.txt filter=lfs diff=lfs merge=lfs -text
+property_sentences.txt filter=lfs diff=lfs merge=lfs -text
