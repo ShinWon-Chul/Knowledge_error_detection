@@ -2,12 +2,12 @@ from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import euclidean_distances  #k-means using euclidean_distances
 import numpy as np
 
-def kmeans_alg(vector_list, k, vector_dict):
+def kmeans_alg(entity_list, k, vector_dict):
     '''
     - function run scikit learn K-means algorithm for positive entities
 
     parameters:
-        vector_list(list) -- list of entities (e.g. ['entity_1', 'entity_2', ..., 'entity_n'])
+        entity_list(list) -- list of entities (e.g. ['entity_1', 'entity_2', ..., 'entity_n'])
         k(int) -- number of centroids
         vector_dict(dictionary) -- a dictionary that maps entities to vector values
             - key(string) : entity / -value(numpy array) : entity vector
@@ -18,11 +18,11 @@ def kmeans_alg(vector_list, k, vector_dict):
         c_label(numpy array) shape(num entity, ) -- label for the cluster to which each entity belongs to
     '''
     if type(vector_dict) == dict : 
-        vectors = np.array([vector_dict[n.split()[0]] for n in vector_list])
+        vectors = np.array([vector_dict[n.split()[0]] for n in entity_list])
     else:
-        vectors = np.array([vector_dict.word_vec(n) for n in vector_list])
+        vectors = np.array([vector_dict.word_vec(n) for n in entity_list])
 
-    kmeans = KMeans(n_clusters=k, random_state=0, max_iter=1000).fit(vectors)
+    kmeans = KMeans(n_clusters=k, random_state=0, max_iter=500).fit(vectors)
     centroids = kmeans.cluster_centers_  # each c_count of center point 
     c_label = kmeans.labels_                    # [...] index is vector's index, value is in cluster
     
