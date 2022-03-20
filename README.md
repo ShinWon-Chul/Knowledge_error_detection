@@ -54,7 +54,7 @@ GloVe 임베딩 기반 오류 트리플 검출 실행 파일 : [`GloVe_embedding
 ## Experiment Results
 총 5000개의 test error 트리플 중 모델이 detection한 error 트리플수
 ||Glove Embedding|Skip-gram Embedding|
-|------|---|---|
+|------|:---:|:---:|
 |DBpedia|3575|973|
 |WiseKB|1808|1650|
 |FreeBase|1956|3492|
