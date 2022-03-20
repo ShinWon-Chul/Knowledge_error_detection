@@ -3,33 +3,6 @@
 해당 코드는 지식 그래프를 임베딩 하여 k-means 클러스터링 기반의 오류 검출은 수행합니다.
 해당 코드에 대한 직관적인 파악은 [`지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출`](/paper/지식그래프%20임베딩%20및%20적응형%20클러스터링을%20활용한%20오류%20트리플%20검출.pdf)를 참조 하십시오.
 
-## Overview
-**1. Clustering positive entity vectors using k-means**
-- Attempt to k-means clustering with an entity vector of triples consisting of <entity, type, person>.
-- A positive entity means that the entity is a person in the triple of <entity, type, person>.
-    - (e.g. entity : 'Biden', 'Trump', ...)
-- Find the maximum Euclidean distance between the centroid of each clusters and the elements included in the cluster.
-- The maximum Euclidean distance obtained from each cluster means the radius $r$ of the cluster, and entities located between the radius from the centroid are classified as entities of the cluster.
-
-**2. Apply the adaptive clustering method.**
-- Add the negative entity vector to the vector space clustered by the positive entity vector.
-- A negative entity means that the entity is not a person in the triple of <entity, type, person>.
-    - (e.g. entity : 'Titanic'(Film), 'New York'(City), ...)
-- Negative vectors are included in the cluster by calculating the distance between each centroid of the cluster.
-- Find the optimal $\delta $(0.6 ~ 1.0) that will maximize the $f1-score$ of each cluster.
-- The $\delta $ is multiplied by the cluster radius $r$ to create a new cluster range $r'$.
-    - $f1-score = \frac{2\times precision\times recall}{precision+recall}$
-    - $precision = \frac{TP}{TP+FP}$
-    - $recall = \frac{TP}{TP+FN}$
-    - $TP(True Positive)$ = Number of positive entities included in the cluster  
-    - $FP(False Positive)$ = Number of negative entities included in the cluster
-    - $FN(False Negative)$ = The number of positive entities included in the cluster before the cluster range was adjusted but not included after the adjustment.  
-
-**3. Perform error triple detection.**
-- Add the positive and negative vectors of the test data to the vector space.
-- Apply a new radius $r'$ to each cluster multiplied by the optimal $\delta $.
-- Entities included in the cluster are classified as positive entities, and entities not included in any cluster are classified as negative entities.
-
 ## Library and version
 ```shell
 python 3.6
