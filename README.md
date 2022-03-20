@@ -3,7 +3,7 @@
 해당 코드는 지식 그래프를 임베딩 하여 k-means 클러스터링 기반의 오류 검출은 수행합니다.
 해당 코드에 대한 직관적인 파악은 [`지식그래프 임베딩 및 적응형 클러스터링을 활용한 오류 트리플 검출`](/paper/지식그래프%20임베딩%20및%20적응형%20클러스터링을%20활용한%20오류%20트리플%20검출.pdf)를 참조 하십시오.
 
-## Library and version
+## Library and Version
 ```shell
 python 3.6
 tensorflow-gpu 1.15.0 - pip install tensorflow-gpu==1.15.0
@@ -40,7 +40,7 @@ e_1890861 r_275 e_651539
 Skip-gram 임베딩 기반 오류 트리플 검출 실행 파일 : [`Skip-gram_embedding_based_error_triple_detection.ipynb`](/Skip-gram_embedding_based_error_triple_detection.ipynb) 
 GloVe 임베딩 기반 오류 트리플 검출 실행 파일 : [`GloVe_embedding_based_error_triple_detection.ipynb`](/GloVe_embedding_based_error_triple_detection.ipynb)
 
-## parameters
+## Parameters
 - 최적의 오류 검출 결과를 얻기 위한 k-means 클러스터링의 optimal k
 	- GloVe
 		- DBpedia = 20
